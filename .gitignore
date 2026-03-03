@@ -16,3 +16,5 @@ mask_out_*
 .ipynb_checkpoints/
 .DS_Store
 Thumbs.db
+
+.gitignore
