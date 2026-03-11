@@ -28,9 +28,9 @@ from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
-FORM_CLASS, _ = uic.loadUiType(os.path.join(
-    os.path.dirname(__file__), 'hazard_detector_dialog_base.ui'))
-
+FORM_CLASS, _ = uic.loadUiType(
+    os.path.join(os.path.dirname(__file__), 'hazard_detector_dialog.ui')
+    )
 
 class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
     def __init__(self, parent=None):
@@ -42,3 +42,27 @@ class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+        self.band_group.setVisible(False)
+        self.layer_input.layerChanged.connect(self.on_layer_changed)
+        self.sensor_type.addItems(["Sentinel (S2 L1C/L2A)", "Landsat"])
+              
+    def on_layer_changed(self):
+        layer = self.layer_input.currentLayer()
+        if not layer:
+            self.band_group.setVisible(False)
+            return
+        
+        count = layer.bandCount()
+        print(count)
+        
+        if count >= 6:
+            self.band_group.setVisible(True)
+            self.combo_blue.setLayer(layer)
+            self.combo_green.setLayer(layer)
+            self.combo_red.setLayer(layer)
+            self.combo_nir.setLayer(layer)
+            self.combo_swir1.setLayer(layer)
+            self.combo_swir2.setLayer(layer)
+            
+        else:
+            self.band_group.setVisible(False)
