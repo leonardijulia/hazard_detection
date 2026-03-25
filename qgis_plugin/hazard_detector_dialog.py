@@ -44,7 +44,7 @@ class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
         self.setupUi(self)
         self.band_group.setVisible(False)
         self.layer_input.layerChanged.connect(self.on_layer_changed)
-        self.sensor_type.addItems(["Sentinel (S2 L1C/L2A)", "Landsat"])
+        self.sensor_type.addItems(["S2_L1C", "S2_L2A", "L8_L2"])
               
     def on_layer_changed(self):
         layer = self.layer_input.currentLayer()
@@ -53,8 +53,7 @@ class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
             return
         
         count = layer.bandCount()
-        print(count)
-        
+                
         if count >= 6:
             self.band_group.setVisible(True)
             self.combo_blue.setLayer(layer)
@@ -66,3 +65,18 @@ class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
             
         else:
             self.band_group.setVisible(False)
+
+    def get_inputs(self):
+        """Returns a dictionary of all user selections from the UI."""
+        return {
+            "layer": self.layer_input.currentLayer(),
+            "sensor": self.sensor_type.currentText(),
+            "bands": [
+                self.combo_blue.currentBand(),
+                self.combo_green.currentBand(),
+                self.combo_red.currentBand(),
+                self.combo_nir.currentBand(),
+                self.combo_swir1.currentBand(),
+                self.combo_swir2.currentBand()
+            ]
+        }

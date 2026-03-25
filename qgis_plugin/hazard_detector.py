@@ -21,16 +21,19 @@
  *                                                                         *
  ***************************************************************************/
 """
-from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
+from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication, Qt
+from qgis.core import QgsRasterLayer, QgsProject, Qgis
 from qgis.PyQt.QtGui import QIcon
-from qgis.PyQt.QtWidgets import QAction
+from qgis.PyQt.QtWidgets import QAction, QApplication
 
 # Initialize Qt resources from file resources.py
 from .resources import *
 # Import the code for the dialog
 from .hazard_detector_dialog import HazardDetectorDialog
 import os.path
-
+import tempfile
+import requests
+from osgeo import gdal
 
 class HazardDetector:
     """QGIS Plugin Implementation."""
@@ -197,4 +200,50 @@ class HazardDetector:
         if result:
             # Do something useful here - delete the line containing pass and
             # substitute with your code.
-            pass
+            data = self.dlg.get_inputs()
+            layer = data['layer']
+            
+            if not layer:
+                return
+            
+            QApplication.setOverrideCursor(Qt.WaitCursor)
+            self.iface.messageBar().pushMessage(
+                "Prithvi AI", "Processing bands and uploading to server...",
+                level=Qgis.Info, duration=0
+                )
+            QApplication.processEvents()
+            
+            temp_path = os.path.join(tempfile.gettempdir(), "hls_upload.tif")
+            gdal.Translate(temp_path, layer.source(), bandList=data['bands']) # Now the input image is in the temp_path as a GTIFF
+            
+            url = "http://127.0.0.1:8000/predict"
+            try:
+                with open(temp_path, 'rb') as f:
+                    files = {'file': (os.path.basename(temp_path), f, 'image/tiff')}
+                    payload = {'sensor': data["sensor"]}
+                    
+                    response = requests.post(url=url, files=files, data=payload)
+                    response.raise_for_status() # Check for HTTP errors
+                    
+                result_json = response.json()
+                mask_path = result_json.get("mask_path")
+                    
+                self.load_mask(mask_path)
+                
+                if os.path.exists(temp_path):
+                    os.remove(temp_path)
+                
+                self.iface.messageBar().clearWidgets()
+                self.iface.messageBar().pushMessage("Success", "Inference complete! Layer added.", level=Qgis.Success, duration=3)
+                
+            except Exception as e:
+                self.iface.messageBar().clearWidgets()
+                self.iface.messageBar().pushMessage("Error", str(e), level=3)
+                
+            finally:
+                QApplication.restoreOverrideCursor()
+                
+    def load_mask(self, path):
+        if path and os.path.exists(path):
+            mask_layer = QgsRasterLayer(path, "Flood_Mask")
+            QgsProject.instance().addMapLayer(mask_layer)
