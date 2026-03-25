@@ -3,7 +3,9 @@ import yaml
 import torch
 import numpy as np
 import rasterio as rio
+from huggingface_hub import hf_hub_download
 from fastapi import FastAPI, UploadFile, File, HTTPException
+from fastapi.responses import  FileResponse
 from contextlib import asynccontextmanager
 from terratorch.tasks import SemanticSegmentationTask
 from terratorch.tasks.tiled_inference import tiled_inference
@@ -12,12 +14,12 @@ def load_model():
     REPO_ID = "ibm-nasa-geospatial/Prithvi-EO-2.0-300M-TL-Sen1Floods11" # for hf-hub in the next round of enhancements
     print("Initializing Prithvi EO 2.0...")
     
-    weights_path = "Prithvi-EO-V2-300M-TL-Sen1Floods11.pt"
-    configs_path = "config.yaml"
+    weights_path = hf_hub_download(repo_id=REPO_ID, filename="Prithvi-EO-V2-300M-TL-Sen1Floods11.pt")
+    configs_local_path = hf_hub_download(repo_id=REPO_ID, filename="config.yaml")
     
-    with open(configs_path, "r") as f:
+    with open(configs_local_path, "r") as f:
         config = yaml.safe_load(f)
-
+    
     model = SemanticSegmentationTask.load_from_checkpoint(
         weights_path,
         **config['model']['init_args']['model_args'])
@@ -80,6 +82,11 @@ async def predict_flood(file: UploadFile = File(...), sensor: str = "S2_L1C"):
         
     try:
         preprocess_and_predict(input_path, output_path, sensor_type=sensor)
-        return {"status": "success", "mask_path": os.path.abspath(output_path)}
+        # return {"status": "success", "mask_path": os.path.abspath(output_path)}
+        return FileResponse(
+            path=output_path,
+            media_type='image/tiff',
+            filename=f"mask_{file.filename}"
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

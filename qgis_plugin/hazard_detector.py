@@ -225,10 +225,15 @@ class HazardDetector:
                     response = requests.post(url=url, files=files, data=payload)
                     response.raise_for_status() # Check for HTTP errors
                     
-                result_json = response.json()
-                mask_path = result_json.get("mask_path")
+                    mask_local_path = os.path.join(tempfile.gettempdir(), "server_result_mask.tif")
                     
-                self.load_mask(mask_path)
+                    with open(mask_local_path, 'wb') as f:
+                        f.write(response.content)
+                    
+                # result_json = response.json()
+                # mask_path = result_json.get("mask_path")
+                    
+                self.load_mask(mask_local_path)
                 
                 if os.path.exists(temp_path):
                     os.remove(temp_path)
