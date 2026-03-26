@@ -202,6 +202,7 @@ class HazardDetector:
             # substitute with your code.
             data = self.dlg.get_inputs()
             layer = data['layer']
+            base_url = self.dlg.txt_url.text().strip().rstrip('/')
             
             if not layer:
                 return
@@ -216,7 +217,8 @@ class HazardDetector:
             temp_path = os.path.join(tempfile.gettempdir(), "hls_upload.tif")
             gdal.Translate(temp_path, layer.source(), bandList=data['bands']) # Now the input image is in the temp_path as a GTIFF
             
-            url = "http://127.0.0.1:8000/predict"
+            url = f"{base_url}/predict"
+            
             try:
                 with open(temp_path, 'rb') as f:
                     files = {'file': (os.path.basename(temp_path), f, 'image/tiff')}

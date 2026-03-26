@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>300</height>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>100</x>
-     <y>270</y>
+     <y>320</y>
      <width>161</width>
      <height>32</height>
     </rect>
@@ -206,7 +206,7 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -227,6 +227,19 @@
      <widget class="QComboBox" name="sensor_type"/>
     </item>
    </layout>
+  </widget>
+  <widget class="QLineEdit" name="txt_url">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>280</y>
+     <width>321</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>http://127.0.0.1:8000</string>
+   </property>
   </widget>
  </widget>
  <customwidgets>
