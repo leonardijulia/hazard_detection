@@ -83,6 +83,7 @@ python -m uvicorn main:app --reload
 
 ## Acknowledgements
 - **IBM & NASA:** For the Prithvi EO 2.0 Foundation Model.
+
 Szwarcman, D., Roy, S., Fraccaro, P., et al. (2024). *Prithvi-EO-2.0: A Versatile Multi-Temporal Foundation Model for Earth Observation Applications.* arXiv preprint arXiv:2412.02732. Available at: https://arxiv.org/abs/2412.02732
 
 ## Licence
