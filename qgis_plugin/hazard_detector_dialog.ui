@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>396</width>
     <height>363</height>
    </rect>
   </property>
@@ -32,8 +32,8 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>41</x>
-     <y>31</y>
+     <x>40</x>
+     <y>60</y>
      <width>103</width>
      <height>16</height>
     </rect>
@@ -45,8 +45,8 @@
   <widget class="QgsMapLayerComboBox" name="layer_input">
    <property name="geometry">
     <rect>
-     <x>162</x>
-     <y>31</y>
+     <x>160</x>
+     <y>60</y>
      <width>201</width>
      <height>21</height>
     </rect>
@@ -206,28 +206,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>40</x>
-     <y>70</y>
-     <width>321</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QLabel" name="label_8">
-      <property name="text">
-       <string>Sensor Type</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="sensor_type"/>
-    </item>
-   </layout>
-  </widget>
   <widget class="QLineEdit" name="txt_url">
    <property name="geometry">
     <rect>
@@ -239,6 +217,65 @@
    </property>
    <property name="text">
     <string>http://127.0.0.1:8000</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="cmb_hazard">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>30</y>
+     <width>201</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="accessibleDescription">
+    <string/>
+   </property>
+   <item>
+    <property name="text">
+     <string>Floods</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>Burn Scars</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLabel" name="label_9">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>30</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Hazard Type</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_8">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>90</y>
+     <width>61</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Sensor Type</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="sensor_type">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>90</y>
+     <width>201</width>
+     <height>19</height>
+    </rect>
    </property>
   </widget>
  </widget>

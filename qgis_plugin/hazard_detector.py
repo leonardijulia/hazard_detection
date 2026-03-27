@@ -166,7 +166,7 @@ class HazardDetector:
         icon_path = ':/plugins/hazard_detector/icon.png'
         self.add_action(
             icon_path,
-            text=self.tr(u'Select Bands'),
+            text=self.tr(u'Prithvi Hazard Detection'),
             callback=self.run,
             parent=self.iface.mainWindow())
 
@@ -207,6 +207,8 @@ class HazardDetector:
             if not layer:
                 return
             
+            hazard_type = self.dlg.cmb_hazard.currentText().lower().replace(" ", "_")
+                
             QApplication.setOverrideCursor(Qt.WaitCursor)
             self.iface.messageBar().pushMessage(
                 "Prithvi AI", "Processing bands and uploading to server...",
@@ -222,7 +224,8 @@ class HazardDetector:
             try:
                 with open(temp_path, 'rb') as f:
                     files = {'file': (os.path.basename(temp_path), f, 'image/tiff')}
-                    payload = {'sensor': data["sensor"]}
+                    payload = {'hazard': hazard_type, 
+                               'sensor': data["sensor"]}
                     
                     response = requests.post(url=url, files=files, data=payload)
                     response.raise_for_status() # Check for HTTP errors
@@ -235,7 +238,7 @@ class HazardDetector:
                 # result_json = response.json()
                 # mask_path = result_json.get("mask_path")
                     
-                self.load_mask(mask_local_path)
+                self.load_mask(mask_local_path, hazard=hazard_type)
                 
                 if os.path.exists(temp_path):
                     os.remove(temp_path)
@@ -250,7 +253,7 @@ class HazardDetector:
             finally:
                 QApplication.restoreOverrideCursor()
                 
-    def load_mask(self, path):
+    def load_mask(self, path, hazard):
         if path and os.path.exists(path):
-            mask_layer = QgsRasterLayer(path, "Flood_Mask")
+            mask_layer = QgsRasterLayer(path, f"{hazard}_mask")
             QgsProject.instance().addMapLayer(mask_layer)
