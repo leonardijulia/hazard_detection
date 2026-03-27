@@ -16,8 +16,8 @@ First, get the code onto your local machine.
 ### Option A: Using Git (Recommended)
 
 ```bash
-git clone https://github.com/YourUsername/hazard-detection-project.git
-cd hazard-detection-project
+git clone https://github.com/leonardijulia/GFM_plugin.git
+cd GFM_plugin
 ```
 ### Option B: Manual Download
 
@@ -50,11 +50,40 @@ python -m uvicorn main:app --reload
 *Note: On the first run, the backend will automatically download the ~1.2GB Prithvi model weights from Hugging Face. This may take a few minutes depending on your internet speed.*
 
 **3. Install the QGIS Plugin**
-...
+1. Find your QGIS plugins directory:
+- Windows: ```%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins```
+- macOS: ```~/Library/Application Support/QGIS/QGIS3/profiles/default/python/plugins```
+- Linux: ```~/.local/share/QGIS/QGIS3/profiles/default/python/plugins```
+
+2. Copy or symlink the ```qgis_plugin``` folder to the plugins directory and rename it to ```hazard_detection```
+
+3. Restart QGIS
+
+4. Enable the plugin: Go to Plugins > Manage and Install Plugins, find "Prithvi Hazard Detector", and enable it.
+
 ## Usage Instructions
+1. **Load Data:** Add a Sentinel-2 or Landsat image to your QGIS project.
+
+2. **Open Plugin:** Click the Prithvi Hazard Detection plugin icon in the toolbar.
+
+3. **Map Bands:** Select the corresponding bands for Blue, Green, Red, NIR, SWIR1, and SWIR2. The plugin will automatically reorder these into the required HLS format.
+
+4. **Set URL:** Ensure the Server URL is set to http://127.0.0.1:8000.
+
+5. **Run:** Click OK. The plugin will create a temporary stack, ship it to the backend, and load the resulting Flood Mask back into your map.
 
 ## Requirements
+- Python 3.10+
+- QGIS 3.22+
+- ```torch```
+- ```terratorch```
+- ```fastapi``` & ```uvicorn```
+- ```huggingface_hub```
+- ```rasterio```
 
 ## Acknowledgements
+- **IBM & NASA:** For the Prithvi EO 2.0 Foundation Model.
+Szwarcman, D., Roy, S., Fraccaro, P., et al. (2024). *Prithvi-EO-2.0: A Versatile Multi-Temporal Foundation Model for Earth Observation Applications.* arXiv preprint arXiv:2412.02732. Available at: https://arxiv.org/abs/2412.02732
 
 ## Licence
+This project is licensed under the **GNU General Public License v3.0.**
