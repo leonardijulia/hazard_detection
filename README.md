@@ -16,7 +16,7 @@ First, get the code onto your local machine.
 ### Option A: Using Git (Recommended)
 
 ```bash
-git clone https://github.com/leonardijulia/GFM_plugin.git
+git clone https://github.com/leonardijulia/hazard_detection.git
 cd GFM_plugin
 ```
 ### Option B: Manual Download
