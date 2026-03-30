@@ -26,7 +26,7 @@ cd GFM_plugin
 3. Open your terminal/command prompt and ```cd``` into that extracted folder.
 
 ### **2. Setup the AI Backend** 
-##### A. Create and Activate Environment
+#### A. Create and Activate Environment
 ```bash
 cd backend
 python -m venv .venv
@@ -38,16 +38,38 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-##### B. Install Dependencies
+#### B. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-##### C. Start the Server
+#### C. Set up Hugging Face authentication (optional but recommended)
+To ensure a smooth download of the Prithvi model weights, it is recommended to create a [Hugging Face access token](https://huggingface.co/docs/hub/en/security-tokens).
+
+Run the following command in your terminal to log in to Hugging Face:
 ```bash
-python -m uvicorn main:app --reload
+hf auth login
 ```
-*Note: On the first run, the backend will automatically download the ~1.2GB Prithvi model weights from Hugging Face. This may take a few minutes depending on your internet speed.*
+Provide your access token when prompted.
+
+#### D. Start the Server
+You can start the server in two ways:
+
+**Option 1: Quick Start (Windows)**
+Simply double-click the start_backend.bat file in the backend folder. This will automatically use the virtual environment to launch the server.
+
+**Option 2: Manual Start (CLI)**
+- *Windows*
+```bash
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload
+```
+
+- *Linux/macOS*
+```bash
+./.venv/bin/python -m uvicorn main:app --reload
+```
+
+*Note: On the first run, the backend will automatically download the Prithvi models weights from Hugging Face. This may take a few minutes depending on your internet speed. The server is ready when you see ```Uvicorn running on http://127.0.0.1:8000```*
 
 ### **3. Install the QGIS Plugin**
 1. Find your QGIS plugins directory:
