@@ -56,10 +56,13 @@ class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
             self.accept()
     
     def validate_inputs(self):
-        server_url = self.txt_url.text().strip()
-        if not server_url:
+        base_url = self.txt_url.text().strip().rstrip('/')
+        
+        if not base_url:
             QMessageBox.warning(self, "Input Error", "The Backend Server address cannot be empty.")
             return False
+        
+        server_url = f"{base_url}/health"
         
         try:
             response = requests.get(server_url, timeout=2)

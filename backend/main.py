@@ -103,6 +103,14 @@ def preprocess_and_predict(input_path, output_path, model, hazard="floods", sens
     profile.update(dtype=rio.uint8, count=1, nodata=None)
     with rio.open(output_path, 'w', **profile) as dst:
         dst.write(mask, 1)
+ 
+@app.get("/health")
+async def health_check():
+    """
+    Simple endpoint for the QGIS plugin to verify 
+    the backend is online without running AI inference.
+    """
+    return {"status": "ok", "model": "Prithvi EO 2.0"}
       
 @app.post("/predict")
 async def predict_flood(file: UploadFile = File(...), sensor: str = Form("S2_L1C"), hazard: str = Form("floods")):
