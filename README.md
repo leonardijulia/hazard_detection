@@ -44,7 +44,7 @@ pip install -r requirements.txt
 ```
 
 #### C. Set up Hugging Face authentication (optional but recommended)
-For a quicker download of the model weights when starting up the server it is recommended to generate a [Hugging Face](https://huggingface.co) access token by following the instructions [here](https://huggingface.co/docs/hub/en/security-tokens).
+To ensure a smooth download of the Prithvi model weights, it is recommended to create a [Hugging Face access token](https://huggingface.co/docs/hub/en/security-tokens).
 
 Run the following command in your terminal to log in to Hugging Face:
 ```bash
