@@ -10,6 +10,8 @@ config.yaml
 
 *.tif
 *.tiff
+*.xml
+
 temp_in_*
 mask_out_*
 
