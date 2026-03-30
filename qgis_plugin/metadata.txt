@@ -1,47 +1,27 @@
-# This file contains metadata for your plugin.
-
-# This file should be included when you package your plugin.# Mandatory items:
-
 [general]
 name=Prithvi Hazard Detector
 qgisMinimumVersion=3.0
-description=Hazard detection using Prithvi EO 2.0 Foundation Model
+description=Automated flood and burn scar detection using Prithvi EO 2.0 Foundation Model.
 version=0.1
 author=Julia Anna Leonardi
 email=juliaanna.leonardi@polimi.it
-
-about=This plugin integrates the TerraMind Geospatial Foundation Model (GFM) to automate the detection of floods and burn scars. While Foundation Models offer high accuracy in natural hazard analysis, they are often inaccessible to practitioners who rely on desktop GIS software rather than Python-based environments. Using the terratorch framework, this plugin enables tiled inference on Sentinel-2 and Sentinel-1 imagery directly within the QGIS interface. By leveraging TerraMind’s multi-modal architecture, the tool provides a streamlined workflow for disaster mapping, bridging the gap between large-scale research models and practical, open-source geospatial applications.
-
-tracker=https://github.com/leonardijulia/GFM_plugin/issues
-repository=https://github.com/leonardijulia/GFM_plugin
-# End of mandatory metadata
-
-# Recommended items:
-
-hasProcessingProvider=no
-# Uncomment the following line and add your changelog:
-# changelog=
-
-# Tags are comma separated with spaces allowed
-tags=python
-
-homepage=https://github.com/leonardijulia/GFM_plugin
-category=Plugins
+repository=https://github.com/leonardijulia/hazard_detection
+tracker=https://github.com/leonardijulia/hazard_detection/issues
+category=Raster
 icon=icon.png
-# experimental flag
+tags=python, gfm, hazard detection, geoAI, nasa, ibm, prithvi
 experimental=True
-
-# deprecated flag (applies to the whole plugin, not just a single version)
 deprecated=False
-
-# Since QGIS 3.8, a comma separated list of plugins to be installed
-# (or upgraded) can be specified.
-# Check the documentation for more information.
-# plugin_dependencies=
-
-Category of the plugin: Raster, Vector, Database or Web
-# category=
-
-# If the plugin can run on QGIS Server.
 server=False
+hasProcessingProvider=no
+
+about=This plugin integrates the IBM-NASA Prithvi EO 2.0 Geospatial Foundation Model (GFM) to automate environmental hazard detection, specifically focusing on flood mapping and burn scar identification.
+
+        The tool utilizes a hybrid Client-Server architecture:
+        - <b>Lightweight Frontend:</b> Seamlessly maps multi-spectral bands (Blue, Green, Red, NIR, SWIR) within the QGIS environment.
+        - <b>High-Performance Backend:</b> Offloads heavy AI inference to a dedicated local or remote Python process.
+
+        <b>Note:</b> This plugin requires a running backend server. For installation and setup instructions, please visit <a href="https://github.com/leonardijulia/hazard_detection">the GitHub Repo</a>
+
+        Szwarcman, D., Roy, S., Fraccaro, P., et al. (2024). Prithvi-EO-2.0: A Versatile Multi-Temporal Foundation Model for Earth Observation Applications. arXiv preprint arXiv:2412.02732. Available at: <a href="https://arxiv.org/abs/2412.02732">https://arxiv.org/abs/2412.02732</a>
 

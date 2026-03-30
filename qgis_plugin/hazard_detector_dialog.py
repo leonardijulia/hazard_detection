@@ -23,9 +23,10 @@
 """
 
 import os
+import requests
 
-from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets
+from qgis.PyQt import uic, QtWidgets
+from qgis.PyQt.QtWidgets import QMessageBox
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(
@@ -42,29 +43,56 @@ class HazardDetectorDialog(QtWidgets.QDialog, FORM_CLASS):
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-        self.band_group.setVisible(False)
+        self.setWindowTitle("Prithvi Hazard Detection")
         self.layer_input.layerChanged.connect(self.on_layer_changed)
-        self.sensor_type.addItems(["S2_L1C", "S2_L2A", "L8_L2"])
-              
+        self.on_layer_changed()
+        self.sensor_type.addItems(["S2_L1C", "S2_L2A", "L8_L2", "HLS"])
+        
+        self.buttonBox.accepted.disconnect() 
+        self.buttonBox.accepted.connect(self.handle_ok)
+    
+    def handle_ok(self):
+        if self.validate_inputs():
+            self.accept()
+    
+    def validate_inputs(self):
+        server_url = self.txt_url.text().strip()
+        if not server_url:
+            QMessageBox.warning(self, "Input Error", "The Backend Server address cannot be empty.")
+            return False
+        
+        try:
+            response = requests.get(server_url, timeout=2)
+            if response.status_code != 200:
+                QMessageBox.critical(self, "Connection Error", f"Server reached but returned error: {response.status_code}")
+                return False
+        except Exception as e:
+            QMessageBox.critical(self, "Connection Error", f"Could not connect to backend: {str(e)}")
+            return False
+
+        return True
+
     def on_layer_changed(self):
         layer = self.layer_input.currentLayer()
         if not layer:
-            self.band_group.setVisible(False)
-            return
+            return 
         
         count = layer.bandCount()
-                
-        if count >= 6:
-            self.band_group.setVisible(True)
-            self.combo_blue.setLayer(layer)
-            self.combo_green.setLayer(layer)
-            self.combo_red.setLayer(layer)
-            self.combo_nir.setLayer(layer)
-            self.combo_swir1.setLayer(layer)
-            self.combo_swir2.setLayer(layer)
+        self.combo_blue.setLayer(layer)
+        self.combo_green.setLayer(layer)
+        self.combo_red.setLayer(layer)
+        self.combo_nir.setLayer(layer)
+        self.combo_swir1.setLayer(layer)
+        self.combo_swir2.setLayer(layer)
+        
+        if count == 6:
+            self.combo_blue.setBand(1)
+            self.combo_green.setBand(2)
+            self.combo_red.setBand(3)
+            self.combo_nir.setBand(4)
+            self.combo_swir1.setBand(5)
+            self.combo_swir2.setBand(6)
             
-        else:
-            self.band_group.setVisible(False)
 
     def get_inputs(self):
         """Returns a dictionary of all user selections from the UI."""
