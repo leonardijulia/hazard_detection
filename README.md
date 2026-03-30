@@ -10,23 +10,23 @@ The plugin uses a **Client-Server (Hybrid)** architecture to keep it lightweight
 
 ## Quick Start Guide
 
-**1. Download the Project**
+### **1. Download the Project**
 First, get the code onto your local machine.
 
-### Option A: Using Git (Recommended)
+##### Option A: Using Git (Recommended)
 
 ```bash
 git clone https://github.com/leonardijulia/hazard_detection.git
 cd GFM_plugin
 ```
-### Option B: Manual Download
+##### Option B: Manual Download
 
 1. Download the repository as a ZIP file from GitHub.
 2. Extract it to a folder (e.g., C:\Users\USER\Documents\Hazard_Detection).
 3. Open your terminal/command prompt and ```cd``` into that extracted folder.
 
-**2. Setup the AI Backend** 
-### A. Create and Activate Environment
+### **2. Setup the AI Backend** 
+##### A. Create and Activate Environment
 ```bash
 cd backend
 python -m venv .venv
@@ -38,18 +38,18 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-### B. Install Dependencies
+##### B. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### C. Start the Server
+##### C. Start the Server
 ```bash
 python -m uvicorn main:app --reload
 ```
 *Note: On the first run, the backend will automatically download the ~1.2GB Prithvi model weights from Hugging Face. This may take a few minutes depending on your internet speed.*
 
-**3. Install the QGIS Plugin**
+### **3. Install the QGIS Plugin**
 1. Find your QGIS plugins directory:
 - Windows: ```%APPDATA%\QGIS\QGIS3\profiles\default\python\plugins```
 - macOS: ```~/Library/Application Support/QGIS/QGIS3/profiles/default/python/plugins```
